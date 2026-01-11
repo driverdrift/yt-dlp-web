@@ -1,0 +1,32 @@
+yt-dlp 现在不能下载抖音视频了，即使带了 cookies 也不行，需要手动爬取
+当播放抖音短视频（登陆时可以抓取，没试过不登录的状态），可以直接在 f12 的media 中获得带有时间限制的直链
+
+yt-dlp --version 查看当前使用的版本
+如果你已经确认当前不是最新版本，可以通过以下命令来更新 yt-dlp：
+yt-dlp -U 可以更新 yt-dlp
+
+yt-dlp -v --cookies /var/www/html/cookies.txt https://www.douyin.com/video/7320158590013066559
+
+-v 是带有调试模式（会输出更多错误信息）
+还有要把 cookies.txt 的权限设置为 命令行 中 yt-dlp 可以有权限读取，而且在 download.php 时候也有权限可以读取 cookies。
+
+直接在电脑上用 wget 下载爬到的抖音直链会报 403 权限被拒绝，在浏览器可以打开直链视频，但是也是禁止浏览器下载。
+这是因为直链需要特定请求头，抖音的直链通常会检测 HTTP Referer、User-Agent、甚至 Cookies，防止别人直接用 wget/yt-dlp 下载。
+用 wget 模拟浏览器 或者 curl 也可以
+wget -O video.mp4 \
+--header="User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.7204.185 Safari/537.36" \
+--header="Referer: https://www.douyin.com/" \
+"https://爬到的直链"
+
+我并没有测试 这个header 是必须和一开始加载视频时候的浏览器要一致吗，经过测试可以不一致。
+
+如果视频还需要登录，还要加 --header "Cookie: …" 但是目前的安全策略（2025年9月15日之前不需要）
+对于短视频，下载的视频即为 音视频都有的。
+
+而对于稍微长点的视频，下载的视频在f12 的 network 的media 里是没有的，有时候需要等视频播放完，缓存完，又会出现两个  音频 和视频的链接，是分开的。
+然后用同样的方法下载后，需要合成音频和视频为 mp4，用原格式直接合成的速度快，且文件较小。
+ffmpeg -i video.onlymp4.mp4 -i video.mp3 -c:v copy -c:a aac -strict experimental output.mp4
+如果此格式在部分特定设备上不可播放，可指定转码格式
+ffmpeg -i video.onlymp4.mp4 -i video.mp3 -c:v libx264 -crf 23 -preset veryfast -c:a aac -b:a 192k -movflags +faststart output.mp4
+
+微信手机端连续上传几个视频后，就一直转圈圈，此时可以用虚拟机安装电脑端上传，因为微信文件传输助手最大只能传20 M 的。
