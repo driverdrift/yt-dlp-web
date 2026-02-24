@@ -112,7 +112,7 @@ if (!file_exists($cacheDir)) mkdir($cacheDir, 0777, true);
 
 // You can also use aria2c as the external downloader
 // $externalDownloaderArgs = "--downloader aria2c --downloader-args \"aria2c:-x 8 -s 8 -k 1M\"";
-$commonArgs = "-N 8 --concurrent-fragments 8 --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
+$commonArgs = "-N 32 --concurrent-fragments 32 --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
     " --cookies " . escapeshellarg($cookiesFile);
 if ($audioOnly) {
     $cmd = "$ytDlpPath -x --audio-format mp3 $commonArgs -o " . escapeshellarg($outputTemplate) . " $url_esc";
