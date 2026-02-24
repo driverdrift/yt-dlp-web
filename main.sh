@@ -18,7 +18,7 @@ apt-get install ffmpeg -y
 # This issue is common—PHP processes (usually run as www-data) have limited permissions and environment variables.
 # They typically can't access yt-dlp in your user directory (~/.local/bin).
 # By default, home directories often have 700 permissions, blocking access for other users.
-sudo mkdir -p /var/www/yt-dlp
+mkdir -p /var/www/yt-dlp
 # Use the "get-cookiestxt-locally" browser extension to export cookies for YouTube and Bilibili.
 # Then upload the exported file to: /var/www/yt-dlp/cookies.txt
 # sftp vps-1
@@ -68,3 +68,4 @@ YouTube Video Downloader
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 END
+
