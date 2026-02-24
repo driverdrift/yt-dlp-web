@@ -29,7 +29,7 @@ cp "./download.html" "/var/www/yt-dlp"
 cp "./download.php" "/var/www/yt-dlp"
 
 chown -R www-data:www-data "/var/www/yt-dlp"
-
+# tail -f /var/log/nginx/example.com.error.log  # debug
 # Access the site to download videos:
 # https://domain.com/yt-dlp/download.html
 # The URL has a trailing slash "/"  
