@@ -38,19 +38,27 @@ mkdir -p /var/www/yt-dlp
 # Otherwise, allow yt-dlp to auto-generate and manage cookies.txt.
 #
 # IMPORTANT:
-# If you manually upload your own cookies.txt file (even if it only contains
-# the header line "# Netscape HTTP Cookie File"), yt-dlp will treat the file
-# as user-managed and will NOT automatically maintain or update it.
+# yt-dlp WILL automatically maintain and update cookies.txt,
+# even if the file was manually uploaded, as long as file
+# permissions allow write access.
 #
-# This can result in an empty or incomplete cookies file when accessing
-# certain websites, causing download failures.
+# If cookies.txt is owned by root (or not writable by the
+# runtime user), yt-dlp cannot modify it.
 #
-# Therefore, do NOT manually create or edit cookies.txt unless you are
-# intentionally providing a fully exported and valid cookies file.
+# In a typical PHP environment, yt-dlp runs as www-data,
+# not root. Therefore, cookies.txt must be writable by www-data.
+#
+# Example:
+# chown www-data:www-data /var/www/yt-dlp/cookies.txt
+# chmod 664 /var/www/yt-dlp/cookies.txt
+# The first line of cookies.txt usually contains:
+# "# Netscape HTTP Cookie File"
+# This header declares that the file follows the standard
+# Netscape HTTP cookie file format.
 # In most cases, it is recommended to let yt-dlp generate and manage
 # cookies.txt automatically.
 
-# cp "./cookies.txt" "/var/www/yt-dlp"
+# cp "./cookies-sample.txt" "/var/www/yt-dlp/cookies.txt"
 # Root cause of download failure:
 # yt-dlp was failing because an empty cookies.txt file was manually created.
 # Although the file existed, it was NOT in valid Netscape cookie format.
