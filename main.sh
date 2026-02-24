@@ -23,6 +23,19 @@ mkdir -p /var/www/yt-dlp
 # Then upload the exported file to: /var/www/yt-dlp/cookies.txt
 # sftp vps-1
 # put "path\to\cookies.txt" "/var/www/yt-dlp"
+# Cookie handling policy:
+# Do NOT manually create an empty cookies.txt file. In normal cases, do not upload cookies at all.
+# If cookies.txt does not exist, yt-dlp will automatically create a valid Netscape-format cookies 
+# file and update it dynamically based on the website being accessed.
+# For example:
+# - When downloading from site-a, yt-dlp will generate and store the required site-a cookies.
+# - When downloading from site-b, yt-dlp will append the necessary site-b cookies to the same file.
+# yt-dlp automatically maintains and updates the cookies file per domain as needed.
+#
+# Only upload a manually exported cookies file (via browser export + SFTP) if:
+# - The video requires a logged-in account (e.g. membership-only content), or
+# - The IP address is restricted and authentication is required.
+# Otherwise, allow yt-dlp to auto-generate and manage cookies.txt.
 
 # cp "./cookies.txt" "/var/www/yt-dlp"
 # Root cause of download failure:
