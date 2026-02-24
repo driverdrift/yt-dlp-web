@@ -13,7 +13,7 @@ chmod a+rx /usr/local/bin/yt-dlp
 
 # Without ffmpeg, yt-dlp downloads lower-quality formats; install it for merging and best quality.
 apt-get update
-apt-get install ffmpeg -y
+apt-get install ffmpeg -y >/dev/null
 
 # This issue is common—PHP processes (usually run as www-data) have limited permissions and environment variables.
 # They typically can't access yt-dlp in your user directory (~/.local/bin).
@@ -68,4 +68,5 @@ YouTube Video Downloader
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 END
+
 
