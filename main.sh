@@ -2,7 +2,7 @@
 # apt-get install yt-dlp -y
 #
 # Download the official binary to a location accessible by all users (including www-data)
-wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp >/dev/null
+wget -q https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp >/dev/null
 
 # Make the binary executable for all users
 chmod a+rx /usr/local/bin/yt-dlp
