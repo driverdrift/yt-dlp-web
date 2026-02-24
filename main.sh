@@ -15,6 +15,11 @@ chmod a+rx /usr/local/bin/yt-dlp
 apt-get update >/dev/null
 apt-get install ffmpeg -y >/dev/null
 
+# If you see:
+# WARNING: The stream has AES-128 encryption and pycryptodomex is not available; extraction will be delegated to ffmpeg
+# ffmpeg's HLS downloader is single-threaded, so yt-dlp's multi-threading settings will not take effect.
+apt-get install python3-pycryptodome -y >/dev/null
+
 # This issue is common—PHP processes (usually run as www-data) have limited permissions and environment variables.
 # They typically can't access yt-dlp in your user directory (~/.local/bin).
 # By default, home directories often have 700 permissions, blocking access for other users.
