@@ -109,14 +109,12 @@ $cookiesFile = '/var/www/wordpress/yt-dlp/cookies.txt';
 
 if (!file_exists($cacheDir)) mkdir($cacheDir, 0777, true);
 
+$commonArgs = "-N 8 --concurrent-fragments 8 --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
+    " --cookies " . escapeshellarg($cookiesFile);
 if ($audioOnly) {
-    $cmd = "$ytDlpPath -x --audio-format mp3 --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
-           " --cookies " . escapeshellarg($cookiesFile) .
-           " -o " . escapeshellarg($outputTemplate) . " $url_esc";
+    $cmd = "$ytDlpPath -x --audio-format mp3 $commonArgs -o " . escapeshellarg($outputTemplate) . " $url_esc";
 } else {
-    $cmd = "$ytDlpPath --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
-           " --cookies " . escapeshellarg($cookiesFile) .
-           " -o " . escapeshellarg($outputTemplate) . " $url_esc";
+    $cmd = "$ytDlpPath $commonArgs -o " . escapeshellarg($outputTemplate) . " $url_esc";
 }
 
 $logFile = $outputDir . $uuid . '.log';
