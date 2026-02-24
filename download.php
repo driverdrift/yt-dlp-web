@@ -110,6 +110,8 @@ $cookiesFile = __DIR__ . '/cookies.txt';
 
 if (!file_exists($cacheDir)) mkdir($cacheDir, 0777, true);
 
+// You can also use aria2c as the external downloader
+// $externalDownloaderArgs = "--downloader aria2c --downloader-args \"aria2c:-x 16 -s 16 -k 1M\"";
 $commonArgs = "-N 8 --concurrent-fragments 8 --no-playlist --no-mtime --cache-dir " . escapeshellarg($cacheDir) .
     " --cookies " . escapeshellarg($cookiesFile);
 if ($audioOnly) {
