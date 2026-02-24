@@ -24,7 +24,21 @@ mkdir -p /var/www/yt-dlp
 # sftp vps-1
 # put "path\to\cookies.txt" "/var/www/yt-dlp"
 
-cp "./cookies.txt" "/var/www/yt-dlp"
+# cp "./cookies.txt" "/var/www/yt-dlp"
+# Root cause of download failure:
+# yt-dlp was failing because an empty cookies.txt file was manually created.
+# Although the file existed, it was NOT in valid Netscape cookie format.
+# When --cookies points to an existing file, yt-dlp strictly validates its format.
+# An empty file triggers: ERROR: '<path>/cookies.txt' does not look like a Netscape format cookies file
+# Solution:
+# - Either upload a properly formatted Netscape cookies file,
+# - Or do NOT create a cookies.txt file at all.
+# If the cookies file does not exist, yt-dlp will automatically
+# generate a valid Netscape-format cookies.txt when needed.
+# In short:
+# Never create an empty cookies.txt file. An empty file fails format validation
+# and also prevents yt-dlp from generating a valid cookies file automatically.
+
 cp "./download.html" "/var/www/yt-dlp"
 cp "./download.php" "/var/www/yt-dlp"
 
