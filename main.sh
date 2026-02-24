@@ -1,34 +1,34 @@
 # This package is outdated (from 2023), not recommended
-# sudo apt install yt-dlp -y
-
+# apt-get install yt-dlp -y
+#
 # Download the official binary to a location accessible by all users (including www-data)
-sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
 
 # Make the binary executable for all users
-sudo chmod a+rx /usr/local/bin/yt-dlp
+chmod a+rx /usr/local/bin/yt-dlp
 
 # Verify www-data user can execute it
-which yt-dlp
-sudo -u www-data /usr/local/bin/yt-dlp --version
+# which yt-dlp  # debug
+# sudo -u www-data /usr/local/bin/yt-dlp --version  # debug
 
 # Without ffmpeg, yt-dlp downloads lower-quality formats; install it for merging and best quality.
-sudo apt install ffmpeg -y
+apt-get update
+apt-get install ffmpeg -y
 
 # This issue is common—PHP processes (usually run as www-data) have limited permissions and environment variables.
 # They typically can't access yt-dlp in your user directory (~/.local/bin).
 # By default, home directories often have 700 permissions, blocking access for other users.
-sudo mkdir -p /var/www/wordpress/yt-dlp/
+sudo mkdir -p /var/www/yt-dlp
 # Use the "get-cookiestxt-locally" browser extension to export cookies for YouTube and Bilibili.
-# Then upload the exported file to: /var/www/wordpress/cookies.txt
-sftp vps-1
-put "path\to\cookies.txt" /var/www/wordpress/yt-dlp/
-put "path\to\yt-dlp-encrypted-download.html" /var/www/wordpress/yt-dlp/download.html
-put "path\to\yt-dlp-encrypted-download.php" /var/www/wordpress/yt-dlp/download.php
-exit
-# sudo touch /var/www/wordpress/yt-dlp/download.php
-# sudo touch /var/www/wordpress/yt-dlp/download.html
+# Then upload the exported file to: /var/www/yt-dlp/cookies.txt
+# sftp vps-1
+# put "path\to\cookies.txt" "/var/www/yt-dlp"
 
-sudo chown -R www-data:www-data /var/www/wordpress/yt-dlp/
+cp "./cookies.txt" "/var/www/yt-dlp"
+cp "./download.html" "/var/www/yt-dlp"
+cp "./download.php" "/var/www/yt-dlp"
+
+chown -R www-data:www-data "/var/www/yt-dlp"
 
 # Access the site to download videos:
 https://domain.com/yt-dlp/download.html
@@ -47,28 +47,24 @@ https://domain.com/yt-dlp/download.html
 # but if the download doesn’t start, it’s likely a certificate issue— the certificate needs to be trusted.
 
 # Test downloading the video with curl to check for errors:
-curl -v -L -O "https://domain.com/downloads/yt_682609212eda94.41831598.mp4"
+# curl -v -L -O "https://domain.com/downloads/yt_682609212eda94.41831598.mp4"
 
 # Option 1: Ignore certificate errors with curl for quick testing:
-curl -v -k -L -O "https://domain.com/downloads/yt_682609212eda94.41831598.mp4"
+# curl -v -k -L -O "https://domain.com/downloads/yt_682609212eda94.41831598.mp4"
 
 # If this works, the download failure is caused by an invalid HTTPS certificate.
-
 # Double-click the certificate to import it into Trusted Root Certification Authorities.
-将公钥导入受信任的证书颁发机构
 
-# For test
-yt-dlp -P ~/ https://www.youtube.com/watch?v=NyUTYwZe_l4
-sudo -u www-data /usr/local/bin/yt-dlp -o /var/www/wordpress/downloads/test.%(ext)s 'https://www.youtube.com/watch?v=NyUTYwZe_l4'
+# For debug
+# yt-dlp -P ~/ https://www.youtube.com/watch?v=NyUTYwZe_l4
+# sudo -u www-data /usr/local/bin/yt-dlp -o /var/www/wordpress/downloads/test.%(ext)s 'https://www.youtube.com/watch?v=NyUTYwZe_l4'
 
 # HTML code for a video downloader page with an automatic redirection.
 YouTube Video Downloader
 : <<'END'
 <!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://ouchub.com/yt-dlp/download.html" target="_blank" rel="noreferrer noopener">Download</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://example.com/yt-dlp/download.html" target="_blank" rel="noreferrer noopener">Download</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
-
 END
-
