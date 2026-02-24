@@ -105,7 +105,8 @@ $outputTemplate = $outputDir . $uuid . '.%(ext)s';
 
 $ytDlpPath = '/usr/local/bin/yt-dlp';
 $cacheDir = '/tmp/yt-dlp-cache';
-$cookiesFile = '/var/www/wordpress/yt-dlp/cookies.txt';
+// $cookiesFile = '/var/www/yt-dlp/cookies.txt';
+$cookiesFile = __DIR__ . '/cookies.txt';
 
 if (!file_exists($cacheDir)) mkdir($cacheDir, 0777, true);
 
