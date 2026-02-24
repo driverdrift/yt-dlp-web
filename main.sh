@@ -2,7 +2,7 @@
 # apt-get install yt-dlp -y
 #
 # Download the official binary to a location accessible by all users (including www-data)
-wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp >/dev/null
 
 # Make the binary executable for all users
 chmod a+rx /usr/local/bin/yt-dlp
@@ -12,7 +12,7 @@ chmod a+rx /usr/local/bin/yt-dlp
 # sudo -u www-data /usr/local/bin/yt-dlp --version  # debug
 
 # Without ffmpeg, yt-dlp downloads lower-quality formats; install it for merging and best quality.
-apt-get update
+apt-get update >/dev/null
 apt-get install ffmpeg -y >/dev/null
 
 # This issue is common—PHP processes (usually run as www-data) have limited permissions and environment variables.
