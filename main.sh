@@ -36,6 +36,19 @@ mkdir -p /var/www/yt-dlp
 # - The video requires a logged-in account (e.g. membership-only content), or
 # - The IP address is restricted and authentication is required.
 # Otherwise, allow yt-dlp to auto-generate and manage cookies.txt.
+#
+# IMPORTANT:
+# If you manually upload your own cookies.txt file (even if it only contains
+# the header line "# Netscape HTTP Cookie File"), yt-dlp will treat the file
+# as user-managed and will NOT automatically maintain or update it.
+#
+# This can result in an empty or incomplete cookies file when accessing
+# certain websites, causing download failures.
+#
+# Therefore, do NOT manually create or edit cookies.txt unless you are
+# intentionally providing a fully exported and valid cookies file.
+# In most cases, it is recommended to let yt-dlp generate and manage
+# cookies.txt automatically.
 
 # cp "./cookies.txt" "/var/www/yt-dlp"
 # Root cause of download failure:
