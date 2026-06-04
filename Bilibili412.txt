@@ -1,0 +1,39 @@
+Bilibili HTTP Error 412: Precondition Failed（前提条件失败）
+需要带真实cookies
+
+而且如果是没登陆的cookies 最终下载到的分辨率就是 480P（清晰度）
+下载后才是1080p
+如果是大会员的cookies 是1080p 60帧或者4k
+
+其实 yt-dlp 团队也意识到了这个问题：每次网站一改版，哪怕只改了 B站的一行代码，用户都得重新下载几十兆的整个程序，太浪费带宽了。
+
+所以他们在近年引入了一个新特性：支持从外部动态加载提取器（Plugins）。
+
+允许开发者把某个网站的解析规则单独写成一个插件（打包成 .zip）。
+
+用户只需要把这个小 zip 包丢进 ~/.config/yt-dlp/plugins/ 目录里，yt-dlp 运行时就会优先用这个独立的规则。
+
+不过，对于官方原生支持的几千个主流网站（包括B站），它们依然被牢牢焊在软件本体内部。所以只要B站的解析规则变了，官方发布了修复，
+你最稳妥的做法依然是执行 yt-dlp -U，去把那个融合了最新规则的“全新本体”给接回来。
+
+那现在是6月份，yt-dlp的github版本还停留在3月份，但是github上仓库主页的零散文件有更新了，这时候yt-dlp 咋更新
+
+方法一：切换到 Nightly（每夜构建版）—— 最推荐
+yt-dlp --update-to nightly
+一旦切换成功，以后你再次执行 yt-dlp -U，它就会默认在 Nightly 通道更新，天天都能用上最新的规则。
+如果哪天你想切回传统的每月稳定版，只需要执行 yt-dlp --update-to stable 即可。
+
+方法二：直接上 Master（主分支最前沿版）
+如果你连昨晚的自动打包都等不及，GitHub 上的零散文件是刚刚 1 小时前才更新的，你想立刻尝鲜，可以切到 master 通道（也叫金丝雀版）：
+yt-dlp --update-to master
+这个命令会直接去抓最新的 master 分支提交（commit）自动编译出的独立二进制文件。这是真正的“全球最新规则同步”，
+不过偶尔可能会因为开发者刚写的代码没测试完而遇到小 Bug。
+
+在切换版本时候有时候会提示ERROR: Unable to obtain version info (HTTP Error 403: rate limit exceeded); 
+Please try again later or visit  https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest
+这个报错非常经典：HTTP Error 403: rate limit exceeded（超出速率限制）。
+要么重试，要么wget 去把官方最新的每夜构建版单文件砸下来，直接覆盖旧文件：
+# 1. 强行下载最新的 Nightly 二进制文件并覆盖
+wget https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+# 2. 重新赋予它可执行权限
+chmod a+rx /usr/local/bin/yt-dlp
